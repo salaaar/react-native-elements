@@ -284,7 +284,7 @@ class Rating extends Component {
             <Animated.View style={this.getSecondaryViewStyle()} />
           </View>
           {this.renderRatings()}
-        </View>, ratingBackgroundColor ||
+        </View>
       </View>
     );
   }
