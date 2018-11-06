@@ -96,9 +96,9 @@ class Rating extends Component {
 
   getPrimaryViewStyle() {
     const { position } = this.state;
-    const { imageSize, ratingCount, type } = this.props;
+    const { imageSize, ratingCount, type,filledRatingBackground } = this.props;
 
-    const color = TYPES[type].color;
+    const color = filledRatingBackground || TYPES[type].color;
 
     const width = position.x.interpolate(
       {
@@ -122,9 +122,9 @@ class Rating extends Component {
 
   getSecondaryViewStyle() {
     const { position } = this.state;
-    const { imageSize, ratingCount, type } = this.props;
+    const { imageSize, ratingCount, type, ratingBackgroundColor } = this.props;
 
-    const backgroundColor = TYPES[type].backgroundColor;
+    const backgroundColor = ratingBackgroundColor || TYPES[type].backgroundColor;
 
     const width = position.x.interpolate(
       {
@@ -147,14 +147,18 @@ class Rating extends Component {
   }
 
   renderRatings() {
-    const { imageSize, ratingCount, type } = this.props;
+    const { imageSize, ratingCount, type, enableRatingColor, disableRatingColor, startingValue } = this.props;
     const source = TYPES[type].source;
 
     return times(ratingCount, index => (
       <View key={index} style={styles.starContainer}>
         <Image
           source={source}
-          style={{ width: imageSize, height: imageSize }}
+          style={{
+            width: imageSize,
+            height: imageSize,
+            tintColor: index < startingValue ? enableRatingColor : disableRatingColor,
+          }}
         />
       </View>
     ));
@@ -280,7 +284,7 @@ class Rating extends Component {
             <Animated.View style={this.getSecondaryViewStyle()} />
           </View>
           {this.renderRatings()}
-        </View>
+        </View>, ratingBackgroundColor ||
       </View>
     );
   }
@@ -374,6 +378,9 @@ Rating.propTypes = {
   showReadOnlyText: PropTypes.bool,
   startingValue: PropTypes.number,
   fractions: fractionsType,
+  enableRatingColor: PropTypes.string,
+  disableRatingColor: PropTypes.string,
+  filledRatingBackground: PropTypes.string,
 };
 
 export { Rating };
